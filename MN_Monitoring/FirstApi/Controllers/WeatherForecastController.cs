@@ -22,6 +22,11 @@ public class WeatherForecastController : ControllerBase
     [HttpGet(Name = "GetWeatherForecast")]
     public async Task<IActionResult> Get(string city, int numberOfDays)
     {
+        if (city.Length < 3)
+        {
+            Activity.Current?.FirstApiValidateCityLength();
+            return BadRequest();
+        }
         Activity.Current?.FirstApiDisplayParameters(city, numberOfDays);
 
         var forecasts = await _client.GetFromJsonAsync<WeatherForecastResponse>($"{_appSettings.SecondApiUrl}/WeatherForecast?city={city}&numberOfDays={numberOfDays}");

@@ -17,7 +17,6 @@ public class WeatherForecastController : ControllerBase
     [HttpGet(Name = "GetWeatherForecast")]
     public async Task<IActionResult> Get(string city, int numberOfDays)
     {
-        // TODO await
         Activity.Current?.SecondaryApiDisplayParameters(city, numberOfDays);
         WeatherForecastData[] forecasts;
 

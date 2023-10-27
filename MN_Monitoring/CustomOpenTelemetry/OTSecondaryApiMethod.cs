@@ -8,11 +8,6 @@ public static class OTSecondaryApiMethod
 {
     public static void SecondaryApiDisplayParameters(this Activity activity, string city, int numberOfDays)
     {
-        // TODO
-        // using var activity = source.StartActivity($"Receive parameters. City: {city} and number of days: {numberOfDays}");
-        // activity.SetTag("city", city);
-        // activity.SetTag("numberOfDays", numberOfDays);
-        
         activity.AddEvent(new ActivityEvent(SecondApiConsts.DisplayParametersMessage, 
             tags: new ActivityTagsCollection(new 
                 List<KeyValuePair<string, object?>>
@@ -33,6 +28,8 @@ public static class OTSecondaryApiMethod
 
     public static Activity SecondaryApiGetActivityForGeneratingData(this ActivitySource source)
     {
-        return source.StartActivity(SecondApiConsts.GeneratingDataMessage);
+        var activity = source.StartActivity(SecondApiConsts.GeneratingDataMessage);
+        activity.SetTag("delay", 1000);
+        return activity;
     }
 }
