@@ -14,25 +14,26 @@ public class WeatherForecastController : ControllerBase
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-    private readonly OTSecondaryApiMethod _oTSecondaryApiMethod;
-
-    private readonly ILogger<WeatherForecastController> _logger;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger, OTSecondaryApiMethod oTSecondaryApiMethod)
-    {
-        _logger = logger;
-        _oTSecondaryApiMethod = oTSecondaryApiMethod;
-    }
-
     [HttpGet(Name = "GetWeatherForecast")]
     public async Task<IActionResult> Get(string city, int numberOfDays)
     {
-        
-        _oTSecondaryApiMethod.DisplayParameters(city, numberOfDays);
+        // TODO await
+        Activity.Current?.SecondaryApiDisplayParameters(city, numberOfDays);
         WeatherForecastData[] forecasts;
-        using (var activity = _oTSecondaryApiMethod.GetActivityForGeneratingData())
+
+        // throw new Exception();
+        try
         {
-            await Task.Delay(Random.Shared.Next(5, 100));
+            throw new Exception();
+        }
+        catch (Exception e)
+        {
+            Activity.Current?.SecondaryApiSaveExceptionInTracing(e);
+        }
+        
+        using (var activity = Activity.Current?.Source.SecondaryApiGetActivityForGeneratingData())
+        {
+            await Task.Delay(1000);
             forecasts = Enumerable.Range(1, numberOfDays).Select(index => new WeatherForecastData
                 {
                     Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

@@ -1,20 +1,25 @@
 ﻿using System.Diagnostics;
-using Microsoft.Extensions.Options;
-using Models;
-
+using CustomOpenTelemetry.ConstsClass;
 namespace CustomOpenTelemetry;
 
-public class OTFirstApiMethod : CustomOpenTelemetryAbstraction
+public static class OTFirstApiMethod
 {
-    public OTFirstApiMethod(IOptions<AppSettings> appSettings) : base(appSettings) {}
-    
-    public void DisplayParameters(string city, int numberOfDays)
+    public static void FirstApiDisplayParameters(this Activity activity, string city, int numberOfDays)
     {
-        if (!IsEnable())
-            return;
+        // TODO zmien to na event
+        // using var activity2 = activity.AddEvent(FirstApiConsts.DisplayParametersMessage);
+        // activity.SetTag("city", city);
+        // activity.SetTag("numberOfDays", numberOfDays);
+        //
         
-        using var activity = Activity.Current?.Source.StartActivity($"Request data for city: {city} and number of days: {numberOfDays}");
-        activity.SetTag("city", city);
-        activity.SetTag("numberOfDays", numberOfDays);
+        activity.AddEvent(new ActivityEvent(FirstApiConsts.DisplayParametersMessage, 
+            tags: new ActivityTagsCollection(new 
+                List<KeyValuePair<string, object?>>
+                {
+                    new ("city", city),
+                    new ("numberOfDays", numberOfDays),
+                }
+            )
+        ));
     }
 }

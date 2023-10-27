@@ -1,25 +1,38 @@
 ﻿using System.Diagnostics;
-using Microsoft.Extensions.Options;
-using Models;
+using CustomOpenTelemetry.ConstsClass;
+using OpenTelemetry.Trace;
 
 namespace CustomOpenTelemetry;
 
-public class OTSecondaryApiMethod : CustomOpenTelemetryAbstraction
+public static class OTSecondaryApiMethod
 {
-    public OTSecondaryApiMethod(IOptions<AppSettings> appSettings) : base(appSettings) {}
-    
-    public void DisplayParameters(string city, int numberOfDays)
+    public static void SecondaryApiDisplayParameters(this Activity activity, string city, int numberOfDays)
     {
-        if (!IsEnable())
-            return;
+        // TODO
+        // using var activity = source.StartActivity($"Receive parameters. City: {city} and number of days: {numberOfDays}");
+        // activity.SetTag("city", city);
+        // activity.SetTag("numberOfDays", numberOfDays);
         
-        using var activity = Activity.Current?.Source.StartActivity($"Receive parameters. City: {city} and number of days: {numberOfDays}");
-        activity.SetTag("city", city);
-        activity.SetTag("numberOfDays", numberOfDays);
+        activity.AddEvent(new ActivityEvent(SecondApiConsts.DisplayParametersMessage, 
+            tags: new ActivityTagsCollection(new 
+                List<KeyValuePair<string, object?>>
+                {
+                    new ("city", city),
+                    new ("numberOfDays", numberOfDays),
+                }
+            )
+        ));
+    }
+    public static void SecondaryApiSaveExceptionInTracing(this Activity activity, Exception exception)
+    {
+        activity.RecordException(exception, new TagList()
+        {
+            {"example parameter", 1}
+        });
     }
 
-    public Activity GetActivityForGeneratingData()
+    public static Activity SecondaryApiGetActivityForGeneratingData(this ActivitySource source)
     {
-        return Activity.Current?.Source.StartActivity("Generating data");
+        return source.StartActivity(SecondApiConsts.GeneratingDataMessage);
     }
 }

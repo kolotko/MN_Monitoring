@@ -12,9 +12,15 @@ public static class InitializeCustomTelemetry
         var jaegerUrl = configuration.GetSection("AppSettings:JaegerUrl").Value;
         var oTServiceName = configuration.GetSection("AppSettings:OTServiceName").Value;
         var oTSourceName = configuration.GetSection("AppSettings:OTSourceName").Value;
+        var oTProjectVersion = configuration.GetSection("AppSettings:OTProjectVersion").Value;
         
         services.AddOpenTelemetry()
-            .ConfigureResource(resourceBuilder => resourceBuilder.AddService(oTServiceName))
+            .ConfigureResource(resourceBuilder => 
+                resourceBuilder.AddService(oTServiceName)
+                     .AddAttributes(new List<KeyValuePair<string, object>>()
+                     {
+                         new ("Version", oTProjectVersion)
+                     }))
             .WithTracing(
                 builder => builder.AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
@@ -25,8 +31,5 @@ public static class InitializeCustomTelemetry
                         opt.Endpoint = new Uri(jaegerUrl);
                     })
             );
-
-        services.AddScoped<OTFirstApiMethod>();
-        services.AddScoped<OTSecondaryApiMethod>();
     }
 }

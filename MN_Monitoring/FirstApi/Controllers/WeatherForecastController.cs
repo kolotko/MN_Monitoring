@@ -10,24 +10,20 @@ namespace FirstApi.Controllers;
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
-    private readonly ILogger<WeatherForecastController> _logger;
     private readonly HttpClient _client;
     private readonly AppSettings _appSettings;
-    private readonly OTFirstApiMethod _otFirstApiMethod;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger, IHttpClientFactory httpClientFactory, IOptions<AppSettings> appSettings, OTFirstApiMethod otFirstApiMethod)
+    
+    public WeatherForecastController(IHttpClientFactory httpClientFactory, IOptions<AppSettings> appSettings)
     {
-        _logger = logger;
         _client = httpClientFactory.CreateClient();
         _appSettings = appSettings.Value;
-        _otFirstApiMethod = otFirstApiMethod;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
     public async Task<IActionResult> Get(string city, int numberOfDays)
     {
-        _otFirstApiMethod.DisplayParameters(city, numberOfDays);
-        
+        Activity.Current?.FirstApiDisplayParameters(city, numberOfDays);
+
         var forecasts = await _client.GetFromJsonAsync<WeatherForecastResponse>($"{_appSettings.SecondApiUrl}/WeatherForecast?city={city}&numberOfDays={numberOfDays}");
 
         return Ok(forecasts);
