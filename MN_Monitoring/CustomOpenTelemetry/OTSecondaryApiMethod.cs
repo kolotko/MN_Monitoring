@@ -12,8 +12,8 @@ public static class OTSecondaryApiMethod
             tags: new ActivityTagsCollection(new 
                 List<KeyValuePair<string, object?>>
                 {
-                    new ("city", city),
-                    new ("numberOfDays", numberOfDays),
+                    new (SecondApiConsts.PropertyCity, city),
+                    new (SecondApiConsts.PropertyNumberOfDays, numberOfDays),
                 }
             )
         ));
@@ -22,14 +22,14 @@ public static class OTSecondaryApiMethod
     {
         activity.RecordException(exception, new TagList()
         {
-            {"example parameter", 1}
+            {SecondApiConsts.PropertyExampleParameter, 1}
         });
     }
 
     public static Activity SecondaryApiGetActivityForGeneratingData(this ActivitySource source)
     {
         var activity = source.StartActivity(SecondApiConsts.GeneratingDataMessage);
-        activity.SetTag("delay", 1000);
+        activity.SetTag(SecondApiConsts.PropertyDelay, 1000);
         return activity;
     }
 }
