@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomOpenTelemetry", "Cust
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThirdApi", "ThirdApi\ThirdApi.csproj", "{11C22301-9119-49A9-9E27-2FE360CAAE4D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrics", "Metrics\Metrics.csproj", "{8B454980-3F18-4FF3-A35B-DA46BAC13D70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{11C22301-9119-49A9-9E27-2FE360CAAE4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11C22301-9119-49A9-9E27-2FE360CAAE4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11C22301-9119-49A9-9E27-2FE360CAAE4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B454980-3F18-4FF3-A35B-DA46BAC13D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B454980-3F18-4FF3-A35B-DA46BAC13D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B454980-3F18-4FF3-A35B-DA46BAC13D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B454980-3F18-4FF3-A35B-DA46BAC13D70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
